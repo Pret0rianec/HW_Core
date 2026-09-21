@@ -14,20 +14,25 @@ public class StorageService {
     private final Map<UUID, Product> storageProduct = new HashMap<>();
     private final Map<UUID, Article> storageArticle = new HashMap<>();
 
+
     public StorageService() {
     }
-
+    public Optional<Product> getProductById(UUID id) {
+        return Optional.ofNullable(storageProduct.get(id));
+    }
     @PostConstruct
     private void initStorage() {
         addProduct();
         addArticle();
     }
+
     public Collection<Searchable> getAllSearchable() {
         Collection<Searchable> allSearchable = new ArrayList<>();
         allSearchable.addAll(getAllProducts());
         allSearchable.addAll(getAllArticles());
         return allSearchable;
     }
+
     public Map<UUID, Product> getStorageProduct() {
         return storageProduct;
     }
