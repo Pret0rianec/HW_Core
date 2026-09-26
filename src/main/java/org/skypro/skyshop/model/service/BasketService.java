@@ -1,5 +1,6 @@
 package org.skypro.skyshop.model.service;
 
+import org.skypro.skyshop.model.Exception.NoSuchProductException;
 import org.skypro.skyshop.model.basket.ProductBasket;
 import org.skypro.skyshop.model.product.Product;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ public class BasketService {
     public void addProductInBasket(UUID id) {
         Optional<Product> productOptional = getStorageService().getProductById(id);
         if (!productOptional.isPresent()) {
-            throw new IllegalArgumentException("Продукт с ID " + id + " не найден в хранилище");
+            throw new NoSuchProductException();
         }
         getProductBasket().addProduct(id);
     }
@@ -43,7 +44,7 @@ public class BasketService {
                     UUID productId = entry.getKey();
                     int quantity = entry.getValue();
                     Product product = storageService.getProductById(productId)
-                            .orElseThrow(() -> new IllegalArgumentException("Продукт не найден: " + productId));
+                            .orElseThrow(() -> new NoSuchProductException());
 
                     return new BasketItem(product, quantity);
                 })
